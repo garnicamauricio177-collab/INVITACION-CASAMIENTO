@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación de Boda</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Montserrat', sans-serif;
+    background:#fff;
+    color:#222;
+    overflow-x:hidden;
+    scroll-behavior:smooth;
+}
+
+h1,h2{
+    font-family:'Playfair Display', serif;
+}
+
+section{
+    padding:60px 20px;
+    text-align:center;
+}
+
+/* HERO */
+.hero{
+    height:100vh;
+    background:url('https://images.unsplash.com/photo-1529636798458-92182e662485') center/cover no-repeat;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    position:relative;
+}
+
+.hero::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:2.8rem;
+    letter-spacing:2px;
+}
+
+.hero p{
+    margin:15px 0;
+    font-size:1.2rem;
+}
+
+.btn{
+    padding:12px 25px;
+    border:none;
+    background:#d4af37;
+    color:#fff;
+    cursor:pointer;
+    font-size:1rem;
+    border-radius:30px;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#b8962e;
+}
+
+/* FADE */
+.fade{
+    opacity:0;
+    transform:translateY(20px);
+    transition:1s;
+}
+
+.fade.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* CARDS */
+.cards{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    justify-content:center;
+}
+
+.card{
+    border:1px solid #eee;
+    padding:20px;
+    border-radius:10px;
+    width:150px;
+}
+
+/* COUNTDOWN */
+.countdown{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    font-size:1.2rem;
+}
+
+/* GALERIA */
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:10px;
+}
+
+.gallery img{
+    width:100%;
+    border-radius:10px;
+}
+
+/* FOOTER */
+.footer{
+    background:#111;
+    color:#fff;
+    padding:40px 20px;
+}
+
+/* MARCO FINAL */
+.frame{
+    border:8px solid #d4af37;
+    padding:10px;
+    border-radius:20px;
+    display:inline-block;
+    margin-top:20px;
+}
+
+.frame img{
+    width:250px;
+    border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- MUSICA -->
+<audio id="music" loop>
+<source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+</audio>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-content">
+<h1>Facu & Aye</h1>
+<p>Nos casamos</p>
+<button class="btn" onclick="startExperience()">Ver invitación</button>
+</div>
+</section>
+
+<!-- HISTORIA -->
+<section class="fade">
+<h2>Nuestra Historia</h2>
+<p>Un día nos encontramos, y sin saberlo, comenzamos a escribir la historia más hermosa de nuestras vidas...</p>
+</section>
+
+<!-- INFO -->
+<section class="fade">
+<h2>Detalles</h2>
+<div class="cards">
+<div class="card"><strong>Fecha</strong><br>10 Enero 2027</div>
+<div class="card"><strong>Hora</strong><br>20:00 hs</div>
+<div class="card"><strong>Lugar</strong><br>Salón Jardín</div>
+</div>
+</section>
+
+<!-- COUNTDOWN -->
+<section class="fade">
+<h2>Faltan</h2>
+<div class="countdown" id="countdown"></div>
+</section>
+
+<!-- UBICACION -->
+<section class="fade">
+<h2>Ubicación</h2>
+<button class="btn" onclick="openMap()">Ver en Google Maps</button>
+</section>
+
+<!-- GALERIA -->
+<section class="fade">
+<h2>Galería</h2>
+<div class="gallery">
+<img src="images/foto1.jpg">
+<img src="images/foto2.jpg">
+<img src="images/foto3.jpg">
+</div>
+</section>
+
+<!-- RSVP -->
+<section class="fade">
+<h2>Confirmar Asistencia</h2>
+<button class="btn" onclick="rsvp()">Confirmar por WhatsApp</button>
+</section>
+
+<!-- FINAL -->
+<section class="footer fade">
+<p>Te esperamos para celebrar este momento tan especial</p>
+
+<div class="frame">
+<img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486">
+</div>
+
+</section>
+
+<script>
+
+/* INICIAR EXPERIENCIA */
+function startExperience(){
+    document.getElementById("music").play();
+    window.scrollTo({top:window.innerHeight, behavior:'smooth'});
+}
+
+/* MAPA */
+function openMap(){
+    window.open("https://maps.google.com");
+}
+
+/* RSVP */
+function rsvp(){
+    let msg = encodeURIComponent("Hola! Confirmo mi asistencia a la boda 🎉");
+    window.open(`https://wa.me/?text=${msg}`);
+}
+
+/* COUNTDOWN */
+let eventDate = new Date("Jan 10, 2027 20:00:00").getTime();
+
+setInterval(()=>{
+    let now = new Date().getTime();
+    let distance = eventDate - now;
+
+    let d = Math.floor(distance/(1000*60*60*24));
+    let h = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    let m = Math.floor((distance%(1000*60*60))/(1000*60));
+    let s = Math.floor((distance%(1000*60))/1000);
+
+    document.getElementById("countdown").innerHTML =
+        `${d}d ${h}h ${m}m ${s}s`;
+},1000);
+
+/* ANIMACIONES */
+let observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            entry.target.classList.add("show");
+        }
+    });
+});
+
+document.querySelectorAll(".fade").forEach(el=>{
+    observer.observe(el);
+});
+
+</script>
+
+</body>
+</html>
